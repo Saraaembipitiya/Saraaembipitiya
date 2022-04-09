@@ -1,6 +1,6 @@
 const errHandler = (err,req,res,next) =>{
     console.log(err)
-    res.json(err)
+    res.json(err.message)
     
 
 }
