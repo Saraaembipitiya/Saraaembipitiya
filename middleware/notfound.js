@@ -1,5 +1,4 @@
 const notFound = (req,res,next) =>{
-    
     res.write("<h2>Login:users/api/v1/login</h2>")
     res.write("<h4 style='color:blue'>Please provide email and password for login </h4>")
     res.write("<h2>Register:/api/v1/users/register</h2>")
