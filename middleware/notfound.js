@@ -1,5 +1,5 @@
 const notFound = (req,res,next) =>{
-    res.write("<h1>Page Not Found</h1>")
+    //res.write("<h1>Page Not Found</h1>")
     res.write("<h2>Login:/api/v1/users/login</h2>")
     res.write("<h4 style='color:blue'>Please provide email and password for login </h4>")
     res.write("<h2>Register:/api/v1/users/register</h2>")
