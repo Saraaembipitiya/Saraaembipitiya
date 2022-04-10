@@ -10,6 +10,7 @@ router.get(`/`,authJwt, async (req, res) =>{
     if(!req.user.isAdmin){
         throw new Error('Your not a admin')
     }
+    console.log('this is a admin')
     const userList = await User.find();
 
     if(!userList) {
@@ -34,6 +35,8 @@ router.post('/login', async(req,res)=>{
     }
     if(bcrypt.compare(user.password, req.body.password)){
         const token = user.genToken()
+        res.cookie('auth',token)
+        console.log(res.cookie)
         res.status(200).json({authenticated:"true",token:token})
     }else{
         res.json({err:"auth failed"})

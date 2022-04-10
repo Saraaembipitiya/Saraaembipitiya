@@ -28,8 +28,9 @@ const usersRoutes = require("./routes/users");
 const ordersRoutes = require("./routes/orders");
 const errHandler = require("./middleware/errHandler");
 const { _applyPlugins } = require("mongoose");
-
+const cookieParser = require('cookie-parser')
 const api = process.env.API_URL;
+app.use(cookieParser())
 app.use(`${api}/categories`,authJwt, categoriesRoutes);
 app.use(`${api}/products`, productsRoutes);
 app.use(`${api}/users`, usersRoutes);

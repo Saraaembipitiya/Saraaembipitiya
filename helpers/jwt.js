@@ -36,15 +36,15 @@ const authJwt = (req,res,next) =>{
 
     
    
-        if(!req.headers.authorization || !req.headers.authorization.startsWith('Bearer')){
-            throw new Error('Invalid token')
+        if(!req.cookies.auth){
+            throw new Error('No token provided')
         }
 
         
 
         
     
-    const token = req.headers.authorization.split(' ')[1]
+    const token = req.cookies.auth
     try {
         user = jwt.verify(token, process.env.SECRET);
         req.user = {id:user.userId, isAdmin:user.isAdmin}
@@ -52,6 +52,7 @@ const authJwt = (req,res,next) =>{
         next()
         
     } catch (error) {
+        console.log(error)
         throw new Error(error)
         
         
