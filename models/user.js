@@ -45,10 +45,12 @@ const userSchema = mongoose.Schema({
     },
 })
 
+//method for generate the token
 userSchema.methods.genToken = function(){
     return jsonwebtoken.sign({userId:this._id, isAdmin:this.isAdmin}, process.env.SECRET, {expiresIn:"30d"})
 }
 
+//middleware for ecrypt the password
 userSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10)
     

@@ -39,6 +39,7 @@ router.post('/login', async(req,res)=>{
     }
     if(bcrypt.compare(user.password, req.body.password)){
         const token = user.genToken()
+        //generate the cookie
         res.cookie('auth',token)
         
         res.status(200).json({authenticated:"true",token:token})
