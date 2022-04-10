@@ -4,6 +4,7 @@ const { OrderItem } = require('../models/orderItem');
 const { del } = require('express/lib/application');
 const router = express.Router();
 
+//get all orders
 router.get(`/`, async (req, res) =>{
     
     if(!req.user.isAdmin){
@@ -20,7 +21,7 @@ router.get(`/`, async (req, res) =>{
    
 })
 
-
+//update single order
 router.put('/:id', (req,res)=>{
     if(!req.user.isAdmin){
         throw new Error('Your not a admin')
@@ -45,7 +46,7 @@ router.delete('/:id', async (req, res)=>{
 
 
 
-
+//add a order
 router.post('/', async (req,res)=>{
     
     const itemId = Promise.all( req.body.orderItems.map(async(item)=>{
@@ -91,22 +92,7 @@ res.status(200).json(order)
 
 
 })
-
-router.get('/get/totalsales', async (req, res)=> {
-    if(!req.user.isAdmin){
-        throw new Error('Your not a admin')
-    }
-    const totalSales= await Order.aggregate([
-        { $group: { _id: null , totalSales : { $sum : "$totalPrice"}}}
-    ])
-
-    if(!totalSales) {
-        return res.status(400).send('The order sales cannot be generated')
-    }
-
-    res.send({totalsales: totalSales.pop().totalsales})
-})
-
+//get total sales
 
 router.get('/total/sales', async (req,res)=>{
     console.log(req.user.isAdmin)
@@ -120,7 +106,7 @@ router.get('/total/sales', async (req,res)=>{
     res.status(200).send(totalPrices)
 
 })
-
+//get users orders
 router.get('/get/user/orders/:id', async (req,res)=>{
     if(!req.user.isAdmin){
         throw new Error('Your not a admin')

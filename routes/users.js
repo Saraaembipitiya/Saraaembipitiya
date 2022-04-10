@@ -6,6 +6,8 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const authJwt = require('../helpers/jwt');
 
+
+//get all user details
 router.get(`/`,authJwt, async (req, res) =>{
     if(!req.user.isAdmin){
         throw new Error('Your not a admin')
@@ -19,6 +21,8 @@ router.get(`/`,authJwt, async (req, res) =>{
     res.send(userList);
 })
 
+
+//get single user deta
 router.get('/:id',authJwt, async (req,res)=>{
     if(!req.user.isAdmin){
         throw new Error('Your not a admin')

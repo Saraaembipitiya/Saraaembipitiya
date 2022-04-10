@@ -13,6 +13,7 @@ const FILE_TYPE_MAP =  {
 
 }
 
+//define multer storage
 
 var storage = multer.diskStorage({
     destination: function(req,file,cb){
@@ -34,6 +35,8 @@ var storage = multer.diskStorage({
 
 const uploadOption =  multer({storage:storage})
 
+
+//get all product
 router.get(`/`, async (req, res) =>{
     const {category} = req.query
     let filter = {}
@@ -42,10 +45,7 @@ router.get(`/`, async (req, res) =>{
         
         filter =  {category:category.split(',')}
         console.log(filter)
-    }
-    
-
-    
+    }  
 
     const select = req.query.select || 'name image images description rishDescription brand price category countInStock rating isFeatured dateCreated'
     const productList = await Product.find(filter).select(select);
@@ -54,7 +54,7 @@ router.get(`/`, async (req, res) =>{
 })
 
 
-
+//get featured product
 router.get(`/featured`, async (req, res) =>{
     const count = req.query.count || 10
     const select = req.query.select || 'name image images description rishDescription brand price category countInStock rating isFeatured dateCreated'
@@ -63,13 +63,14 @@ router.get(`/featured`, async (req, res) =>{
     res.status(200).json([productList, {length:productList.length}]);
 })
 
+//get single product
 router.get('/:id', async (req,res)=>{
     Product.findById(req.params.id).then((product)=>{
         res.status(200).json(product)
     }).catch((err)=>{
         next(err)})
 })
-
+//update single product
 router.put('/:id',authJwt,uploadOption.single('image'),async(req,res)=>{
 
     const product = Product.findById(req.params.id)
@@ -98,7 +99,7 @@ router.put('/:id',authJwt,uploadOption.single('image'),async(req,res)=>{
     const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body , {new:true ,runValidators:true})
     res.status(200).json(updatedProduct)
 })
-
+//delete single product
 router.delete('/:id',authJwt, (req,res)=>{
     if(!req.user.isAdmin){
         throw new Error('Your not a admin')
@@ -109,6 +110,8 @@ router.delete('/:id',authJwt, (req,res)=>{
     }).catch((err)=> res.json({err:err}))
 })
 
+
+//add a product
 router.post(`/`,authJwt,uploadOption.single('image'), async (req, res) =>{
     if(!req.file){
         res.send("no image in the file")
@@ -117,7 +120,7 @@ router.post(`/`,authJwt,uploadOption.single('image'), async (req, res) =>{
     console.log(req.body)
     filename = req.file.filename
     const basePath = `${req.protocol}://${req.get('host')}/public/upload/`
-    req.body.image = `${basePath}${filename}` //"http://localhost:3000/public/upload/image-2323232"
+    req.body.image = `${basePath}${filename}`
     console.log(req.protocol)
     console.log(req.get('host'))
     
@@ -134,10 +137,11 @@ router.post(`/`,authJwt,uploadOption.single('image'), async (req, res) =>{
 })
 
 
+//update product image galary
 router.put('/galary/:id',authJwt,uploadOption.array('images', 10), async (req,res)=>{
     const files = req.files
     console.log(req.files)
-    //req.file.filename
+    
     const basePath = `${req.protocol}://${req.get('host')}/public/upload/`
     let imagePathes = files.map((file)=>{
         return `${basePath}${file.filename}`
