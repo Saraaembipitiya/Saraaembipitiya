@@ -5,7 +5,7 @@ const { del } = require('express/lib/application');
 const router = express.Router();
 
 router.get(`/`, async (req, res) =>{
-    //console.log(req.user.isAdmin)
+    
     if(!req.user.isAdmin){
         throw new Error('Your not a admin')
     }
@@ -29,18 +29,7 @@ router.put('/:id', (req,res)=>{
 })
 
 router.delete('/:id', async (req, res)=>{
-    // Order.findByIdAndRemove(req.params.id).then(async order =>{
-    //     if(order) {
-    //             order.orderItems.map(async orderItem => {
-    //             await OrderItem.findByIdAndRemove(orderItem)
-    //         })
-    //         return res.status(200).json({success: true, message: 'the order is deleted!'})
-    //     } else {
-    //         return res.status(404).json({success: false , message: "order not found!"})
-    //     }
-    // }).catch(err=>{
-    //    return res.status(500).json({success: false, error: err}) 
-    // })
+
     if(!req.user.isAdmin){
         throw new Error('Your not a admin')
     }

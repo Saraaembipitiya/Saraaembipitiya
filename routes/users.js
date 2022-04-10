@@ -36,7 +36,7 @@ router.post('/login', async(req,res)=>{
     if(bcrypt.compare(user.password, req.body.password)){
         const token = user.genToken()
         res.cookie('auth',token)
-        console.log(res.cookie)
+        
         res.status(200).json({authenticated:"true",token:token})
     }else{
         res.json({err:"auth failed"})

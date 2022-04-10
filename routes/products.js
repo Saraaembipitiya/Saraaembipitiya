@@ -27,7 +27,6 @@ var storage = multer.diskStorage({
     },
     filename: function(req,file,cb){
         const filename = file.originalname.split(' ').join('-')
-        // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
         const extention = FILE_TYPE_MAP[file.mimetype]
         cb(null, `${filename}-${Date.now()}.${extention}`)
     }
@@ -50,11 +49,7 @@ router.get(`/`, async (req, res) =>{
 
     const select = req.query.select || 'name image images description rishDescription brand price category countInStock rating isFeatured dateCreated'
     const productList = await Product.find(filter).select(select);
-    
-
-    // if(!productList) {
-    //     res.status(500).json({success: false})
-    // } 
+  
     res.status(200).json([productList, {length:productList.length}]);
 })
 
@@ -64,11 +59,7 @@ router.get(`/featured`, async (req, res) =>{
     const count = req.query.count || 10
     const select = req.query.select || 'name image images description rishDescription brand price category countInStock rating isFeatured dateCreated'
     const productList = await Product.find({isFeatured:true}).select(select).limit(+count);
-    //populate('category')
-
-    // if(!productList) {
-    //     res.status(500).json({success: false})
-    // } 
+    
     res.status(200).json([productList, {length:productList.length}]);
 })
 
@@ -86,7 +77,7 @@ router.put('/:id',authJwt,uploadOption.single('image'),async(req,res)=>{
         throw new Error('Your not a admin')
     }
     if(!product){
-       // return res.send('invalid Id')
+       return res.send('invalid Id')
     }
     let productFile 
     if(req.file){

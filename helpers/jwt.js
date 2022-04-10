@@ -1,33 +1,5 @@
-// const expressJwt = require('express-jwt')
 
 const jwt = require("jsonwebtoken");
-
-// function authJwt (){
-//     return expressJwt({
-//         secret:process.env.SECRET,
-//         algorithms:['HS256'],
-//         isRevoked: isRevoked
-//     }).unless({
-        
-//         path:[
-//             {url:/\/api\/v1\/products(.*)/, methods: ['GET', 'OPTIONS']},
-//             {url:/\/api\/v1\/categories(.*)/, methods: ['GET', 'OPTIONS']},
-//             {url:/\/api\/v1\/orders(.*)/, methods: ['GET', 'OPTIONS']},
-//             '/api/v1/users/login',
-//             '/api/v1/users/register'
-//         ]
-//     })
-// }
-
-// async function isRevoked(req,payload, done){
-//     if(!payload.isAdmin){
-//         return done(null, true)
-//     }
-//     return done()
-    
-// }
-
-// module.exports = authJwt
 
 
 //authentication middleware
@@ -35,7 +7,7 @@ const authJwt = (req,res,next) =>{
     
 
     
-   
+   //check the cookie is set
         if(!req.cookies.auth){
             throw new Error('No token provided')
         }
