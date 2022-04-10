@@ -5,6 +5,7 @@ const app = express();
 app.use('/public/upload/', express.static(__dirname+'/public/upload/'))
 const morgan = require("morgan");
 const mongoose = require("mongoose");
+const notFound = require('./middleware/notfound')
 //const cors = require("cors");
 const dotenv = require("dotenv")
 const authJwt = require("./helpers/jwt");
@@ -35,6 +36,7 @@ app.use(`${api}/users`, usersRoutes);
 app.use(`${api}/orders`,authJwt, ordersRoutes);
 
 app.use(errHandler)
+app.use(notFound)
 //Database
 mongoose
   .connect(process.env.CONNECTION_STRING,{useNewUrlParser: true, useUnifiedTopology: true })
